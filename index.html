@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sportified — AI Lesson Plans for Coaches & Programs</title>
+<meta name="description" content="Build a complete practice plan in under 60 seconds. Sportified's AI adapts in real-time to weather, equipment, group size, and facility constraints.">
+
+<!-- Tally Waitlist Widget -->
+<script src="https://tally.so/widgets/embed.js"></script>
+
+<!-- Fonts -->
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@300,400,500,600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* ---- WAITLIST SECTION ---- */
+.waitlist-section {
+  background: var(--color-navy);
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(5rem, 10vw, 8rem);
+}
+.waitlist-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,224,112,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,224,112,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+.waitlist-glow {
+  position: absolute;
+  width: 700px; height: 400px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(0,224,112,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.waitlist-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+  max-width: 680px;
+  margin: 0 auto;
+}
+.waitlist-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+}
+.waitlist-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #e8edf3;
+  line-height: 1.1;
+}
+.waitlist-headline span { color: var(--color-accent); }
+.waitlist-sub {
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  color: rgba(232,237,243,0.65);
+  line-height: 1.65;
+  max-width: 52ch;
+}
+.waitlist-social-proof {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+.waitlist-social-proof .proof-avatars .avatar {
+  border-color: var(--color-navy);
+}
+.waitlist-proof-text {
+  font-size: 0.875rem;
+  color: rgba(232,237,243,0.55);
+}
+.waitlist-proof-text strong { color: rgba(232,237,243,0.9); }
+.waitlist-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 1rem 2.25rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+  text-decoration: none;
+  box-shadow: 0 0 0 0 var(--color-accent-glow);
+}
+.waitlist-btn:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px var(--color-accent-glow);
+}
+.waitlist-btn svg { flex-shrink: 0; }
+.waitlist-perks {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.waitlist-perk {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: rgba(232,237,243,0.5);
+  font-weight: 500;
+}
+.waitlist-perk span.perk-check { color: var(--color-accent); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" aria-label="Sportified home">
+      <svg viewBox="0 0 140 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="140" height="32" aria-label="Sportified">
+        <rect x="0" y="4" width="22" height="6" rx="3" fill="var(--color-accent)"/>
+        <rect x="0" y="13" width="22" height="6" rx="3" fill="var(--color-accent)" opacity="0.6"/>
+        <rect x="0" y="22" width="22" height="6" rx="3" fill="var(--color-accent)"/>
+        <text x="30" y="23" font-family="'Clash Display', sans-serif" font-size="18" font-weight="600" fill="currentColor" letter-spacing="-0.5">Sportified</text>
+      </svg>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#adaptability">How It Works</a></li>
+      <li><a href="#dashboard">Admin</a></li>
+      <li><a href="#testimonials">Coaches</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn-ghost btn-sm" data-theme-toggle aria-label="Switch to light mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a href="#pricing" class="btn-secondary btn-sm">Log in</a>
+      <button class="btn-primary btn-sm" onclick="Tally.openPopup('q4Oqqg', {layout:'modal',width:500,autoClose:4000})">Join waitlist</button>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="#features">Features</a>
+    <a href="#adaptability">How It Works</a>
+    <a href="#dashboard">Admin</a>
+    <a href="#testimonials">Coaches</a>
+    <a href="#pricing">Pricing</a>
+    <button class="btn-primary" onclick="Tally.openPopup('q4Oqqg', {layout:'modal',width:500,autoClose:4000})">Join waitlist</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+  </div>
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        AI-Powered • Real-Time • 40+ Sports
+      </div>
+      <h1 class="hero-headline">Build a complete<br><span class="accent-text">lesson plan</span><br>in 60 seconds.</h1>
+      <p class="hero-sub">Type your goals, sport, age group, and equipment. Sportified's AI instantly builds a full, adaptable session plan — so you coach, not copy-paste.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary btn-lg" onclick="Tally.openPopup('q4Oqqg', {layout:'modal',width:500,autoClose:4000})">Join the waitlist</button>
+        <a href="#features" class="btn-ghost btn-lg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          See how it works
+        </a>
+      </div>
+      <div class="hero-social-proof">
+        <div class="proof-avatars">
+          <div class="avatar av1">MK</div>
+          <div class="avatar av2">SR</div>
+          <div class="avatar av3">TL</div>
+          <div class="avatar av4">JP</div>
+        </div>
+        <div class="proof-text">
+          <strong>2,400+ coaches</strong> across 18 countries building better practices
+        </div>
+      </div>
+    </div>
+
+    <!-- Live plan preview card -->
+    <div class="hero-demo">
+      <div class="demo-card">
+        <div class="demo-card-header">
+          <div class="demo-header-left">
+            <div class="demo-sport-tag">⚽ Soccer · U12 · 45 min</div>
+            <div class="demo-status">
+              <span class="status-dot pulse"></span>
+              AI generating…
+            </div>
+          </div>
+          <div class="demo-alert" id="weatherAlert">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Rain expected · <span class="alert-action">Tap to switch indoor</span>
+          </div>
+        </div>
+        <div class="demo-plan">
+          <div class="plan-phase">
+            <div class="phase-label">Warm-Up · 10 min</div>
+            <div class="plan-drill active-drill">
+              <div class="drill-dot green-dot"></div>
+              <div class="drill-info">
+                <div class="drill-name">Dynamic Rondos</div>
+                <div class="drill-meta">4v1 · 10×10 grid · cones</div>
+              </div>
+              <div class="drill-intensity low">Low</div>
+            </div>
+            <div class="plan-drill">
+              <div class="drill-dot green-dot"></div>
+              <div class="drill-info">
+                <div class="drill-name">Activation Jogging Patterns</div>
+                <div class="drill-meta">Full group · follow-the-leader</div>
+              </div>
+              <div class="drill-intensity low">Low</div>
+            </div>
+          </div>
+          <div class="plan-phase">
+            <div class="phase-label">Main Block · 25 min</div>
+            <div class="plan-drill">
+              <div class="drill-dot yellow-dot"></div>
+              <div class="drill-info">
+                <div class="drill-name">Dribbling Under Pressure</div>
+                <div class="drill-meta">Pairs · 8×8 grid · 1 ball/pair</div>
+              </div>
+              <div class="drill-intensity med">Med</div>
+            </div>
+            <div class="plan-drill">
+              <div class="drill-dot yellow-dot"></div>
+              <div class="drill-info">
+                <div class="drill-name">Small-Sided 3v3 Game</div>
+                <div class="drill-meta">Groups of 6 · no keeper</div>
+              </div>
+              <div class="drill-intensity high">High</div>
+            </div>
+          </div>
+          <div class="plan-phase">
+            <div class="phase-label">Cool-Down · 10 min</div>
+            <div class="plan-drill">
+              <div class="drill-dot green-dot"></div>
+              <div class="drill-info">
+                <div class="drill-name">Passing Circle + Reflection</div>
+                <div class="drill-meta">Full group · coach-led</div>
+              </div>
+              <div class="drill-intensity low">Low</div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-footer">
+          <div class="demo-stat"><span>5</span> drills</div>
+          <div class="demo-stat"><span>3</span> phases</div>
+          <div class="demo-stat"><span>45</span> min</div>
+          <div class="demo-rebuild">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.49"/></svg>
+            Regenerate
+          </div>
+        </div>
+      </div>
+      <div class="demo-time-badge">Generated in <strong>2.8s</strong></div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="container stats-row">
+      <div class="stat-item">
+        <div class="stat-number">40+</div>
+        <div class="stat-label">Sports supported</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number">2.8s</div>
+        <div class="stat-label">Avg. generation time</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number">10k+</div>
+        <div class="stat-label">Plans created</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number">4.9★</div>
+        <div class="stat-label">Coach rating</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number">6.2h</div>
+        <div class="stat-label">Saved per coach/week</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI LESSON PLANS -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">AI Lesson Plans</div>
+      <h2 class="section-title">Stop planning. Start coaching.</h2>
+      <p class="section-sub">Tell Sportified what you need. It builds a complete, structured session plan — tailored to your athletes, your sport, and your constraints.</p>
+    </div>
+
+    <div class="features-layout">
+      <div class="features-tabs">
+        <button class="feature-tab active" data-tab="0">
+          <div class="tab-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="tab-text">
+            <div class="tab-title">AI-Generated Plans</div>
+            <div class="tab-desc">Instant structured sessions from a single prompt</div>
+          </div>
+        </button>
+        <button class="feature-tab" data-tab="1">
+          <div class="tab-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="tab-text">
+            <div class="tab-title">Sport-Specific Intelligence</div>
+            <div class="tab-desc">Deep knowledge across 40+ sports</div>
+          </div>
+        </button>
+        <button class="feature-tab" data-tab="2">
+          <div class="tab-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="tab-text">
+            <div class="tab-title">Curriculum Alignment</div>
+            <div class="tab-desc">Maps to school PE standards automatically</div>
+          </div>
+        </button>
+        <button class="feature-tab" data-tab="3">
+          <div class="tab-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <div class="tab-text">
+            <div class="tab-title">Skill Progression Tracking</div>
+            <div class="tab-desc">Watch athletes grow session-over-session</div>
+          </div>
+        </button>
+      </div>
+
+      <div class="features-preview">
+        <div class="feature-panel active" id="panel-0">
+          <div class="ai-chat-ui">
+            <div class="chat-header">
+              <div class="chat-dot chat-dot-red"></div>
+              <div class="chat-dot chat-dot-yellow"></div>
+              <div class="chat-dot chat-dot-green"></div>
+              <span class="chat-title">Sportified AI Assistant</span>
+            </div>
+            <div class="chat-body">
+              <div class="chat-msg user-msg">
+                <div class="chat-bubble user-bubble">
+                  Basketball practice for 14-year-olds, 18 players, outdoor court, 60 minutes. Focus on transition offense and defensive rotations.
+                </div>
+              </div>
+              <div class="chat-msg ai-msg">
+                <div class="chat-avatar-ai">S</div>
+                <div class="chat-bubble ai-bubble">
+                  <div class="typing-header">
+                    <span class="typing-badge">Generating plan</span>
+                    <span class="typing-dots"><span></span><span></span><span></span></span>
+                  </div>
+                  <div class="ai-plan-preview">
+                    <div class="ai-plan-row">
+                      <span class="ai-plan-phase">Warm-Up (10 min)</span>
+                      <span class="ai-plan-drill">Full-court layup lines + defensive slides</span>
+                    </div>
+                    <div class="ai-plan-row">
+                      <span class="ai-plan-phase">Skill Block (20 min)</span>
+                      <span class="ai-plan-drill">3-on-2 transition drill — alternate sides</span>
+                    </div>
+                    <div class="ai-plan-row">
+                      <span class="ai-plan-phase">Main Game (25 min)</span>
+                      <span class="ai-plan-drill">5v5 with transition rules + rotation timer</span>
+                    </div>
+                    <div class="ai-plan-row">
+                      <span class="ai-plan-phase">Cool-Down (5 min)</span>
+                      <span class="ai-plan-drill">Static stretching + team debrief</span>
+                    </div>
+                  </div>
+                  <div class="ai-actions">
+                    <button class="ai-action-btn active-action">Use this plan</button>
+                    <button class="ai-action-btn">Modify</button>
+                    <button class="ai-action-btn">Regenerate</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-panel" id="panel-1">
+          <div class="sport-grid-ui">
+            <div class="sport-grid-header">40+ Sports · Deep Knowledge</div>
+            <div class="sport-grid">
+              <div class="sport-chip active-chip">⚽ Soccer</div>
+              <div class="sport-chip">🏀 Basketball</div>
+              <div class="sport-chip">🏈 Football</div>
+              <div class="sport-chip">🏃 Track &amp; Field</div>
+              <div class="sport-chip">🏊 Swimming</div>
+              <div class="sport-chip">🎾 Tennis</div>
+              <div class="sport-chip">🏐 Volleyball</div>
+              <div class="sport-chip">⚾ Baseball</div>
+              <div class="sport-chip">🥍 Lacrosse</div>
+              <div class="sport-chip">🏒 Hockey</div>
+              <div class="sport-chip">🤸 Gymnastics</div>
+              <div class="sport-chip">+30 more</div>
+            </div>
+            <div class="sport-detail">
+              <div class="sport-detail-label">Soccer · U10 session knowledge includes:</div>
+              <ul class="sport-detail-list">
+                <li>Age-appropriate drill progressions</li>
+                <li>Safe intensity curves for youth players</li>
+                <li>Equipment alternatives (no cones → markers)</li>
+                <li>Common skill gaps at this level</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-panel" id="panel-2">
+          <div class="curriculum-ui">
+            <div class="curriculum-header">Curriculum Alignment Engine</div>
+            <div class="curriculum-map">
+              <div class="curr-row">
+                <div class="curr-label">BC PE Standards</div>
+                <div class="curr-bar"><div class="curr-fill" style="width:94%"></div></div>
+                <div class="curr-pct">94%</div>
+              </div>
+              <div class="curr-row">
+                <div class="curr-label">Ontario PE Curriculum</div>
+                <div class="curr-bar"><div class="curr-fill" style="width:91%"></div></div>
+                <div class="curr-pct">91%</div>
+              </div>
+              <div class="curr-row">
+                <div class="curr-label">Alberta PLOs</div>
+                <div class="curr-bar"><div class="curr-fill" style="width:88%"></div></div>
+                <div class="curr-pct">88%</div>
+              </div>
+              <div class="curr-row">
+                <div class="curr-label">Sport Canada Guidelines</div>
+                <div class="curr-bar"><div class="curr-fill" style="width:96%"></div></div>
+                <div class="curr-pct">96%</div>
+              </div>
+            </div>
+            <div class="curr-badge">Auto-tagged to learning outcomes on every export</div>
+          </div>
+        </div>
+
+        <div class="feature-panel" id="panel-3">
+          <div class="progress-ui">
+            <div class="progress-header">Athlete Skill Tracker</div>
+            <div class="progress-athletes">
+              <div class="prog-row">
+                <div class="prog-avatar">JM</div>
+                <div class="prog-info">
+                  <div class="prog-name">Jordan M.</div>
+                  <div class="prog-bars">
+                    <div class="prog-bar-item">
+                      <span>Ball Control</span>
+                      <div class="prog-bar"><div class="prog-fill" style="width:78%"></div></div>
+                    </div>
+                    <div class="prog-bar-item">
+                      <span>Passing</span>
+                      <div class="prog-bar"><div class="prog-fill" style="width:65%"></div></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="prog-trend up">+12% ↑</div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-avatar">SK</div>
+                <div class="prog-info">
+                  <div class="prog-name">Sofia K.</div>
+                  <div class="prog-bars">
+                    <div class="prog-bar-item">
+                      <span>Shooting</span>
+                      <div class="prog-bar"><div class="prog-fill" style="width:85%"></div></div>
+                    </div>
+                    <div class="prog-bar-item">
+                      <span>Decision Making</span>
+                      <div class="prog-bar"><div class="prog-fill" style="width:72%"></div></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="prog-trend up">+8% ↑</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REAL-TIME ADAPTABILITY -->
+<section class="adapt-section" id="adaptability">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Real-Time Adaptability</div>
+      <h2 class="section-title">Plans that react to reality.</h2>
+      <p class="section-sub">Something changed? One tap and Sportified rebuilds the entire session around your new constraints — in under 3 seconds.</p>
+    </div>
+
+    <div class="adapt-layout">
+      <div class="adapt-triggers">
+        <div class="trigger-label">Select a real-world scenario:</div>
+        <button class="trigger-btn active" data-trigger="0">
+          <div class="trigger-icon">🌧️</div>
+          <div class="trigger-text">
+            <div class="trigger-title">Rain / Weather</div>
+            <div class="trigger-desc">Field flooded, moving indoors</div>
+          </div>
+        </button>
+        <button class="trigger-btn" data-trigger="1">
+          <div class="trigger-icon">🎒</div>
+          <div class="trigger-text">
+            <div class="trigger-title">No Equipment</div>
+            <div class="trigger-desc">Bag not delivered today</div>
+          </div>
+        </button>
+        <button class="trigger-btn" data-trigger="2">
+          <div class="trigger-icon">📐</div>
+          <div class="trigger-text">
+            <div class="trigger-title">Smaller Space</div>
+            <div class="trigger-desc">Half the field blocked off</div>
+          </div>
+        </button>
+        <button class="trigger-btn" data-trigger="3">
+          <div class="trigger-icon">👥</div>
+          <div class="trigger-text">
+            <div class="trigger-title">Group Size Change</div>
+            <div class="trigger-desc">8 players absent today</div>
+          </div>
+        </button>
+      </div>
+
+      <div class="adapt-result">
+        <div class="adapt-before-after">
+          <div class="before-card">
+            <div class="ba-label before-label">Before</div>
+            <div class="ba-drills" id="beforeDrills">
+              <div class="ba-drill">Large field scrimmage · 60×40m</div>
+              <div class="ba-drill">Cone weaving relay · 20 cones</div>
+              <div class="ba-drill">Outdoor crossing drill · full pitch</div>
+            </div>
+          </div>
+          <div class="adapt-arrow">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <div class="adapt-rebuild-badge" id="rebuildBadge">Rebuilt in <strong>2.1s</strong></div>
+          </div>
+          <div class="after-card">
+            <div class="ba-label after-label">After</div>
+            <div class="ba-drills" id="afterDrills">
+              <div class="ba-drill new-drill">Gym dribbling course · markers</div>
+              <div class="ba-drill new-drill">3v3 futsal · gym floor</div>
+              <div class="ba-drill new-drill">Wall-pass relay · pairs · no cones</div>
+            </div>
+          </div>
+        </div>
+        <div class="adapt-quote">
+          "It was raining 20 minutes before practice. I tapped 'indoor' and walked in with a completely new plan. The kids never knew."
+          <div class="adapt-quote-author">— Marcus T., Youth Soccer Coach, Vancouver</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN DASHBOARD -->
+<section class="dashboard-section" id="dashboard">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Admin Dashboard</div>
+      <h2 class="section-title">Full visibility for programs<br>and districts.</h2>
+      <p class="section-sub">Give administrators the oversight they need — curriculum alignment, coach activity, usage trends, and season planning — all in one place.</p>
+    </div>
+
+    <div class="dashboard-ui">
+      <div class="dash-sidebar">
+        <div class="dash-nav-item active-nav">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Overview
+        </div>
+        <div class="dash-nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Coaches
+        </div>
+        <div class="dash-nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Plans
+        </div>
+        <div class="dash-nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Analytics
+        </div>
+        <div class="dash-nav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Season Plan
+        </div>
+      </div>
+
+      <div class="dash-main">
+        <div class="dash-topbar">
+          <div class="dash-title">District Overview — Spring 2025</div>
+          <div class="dash-filters">
+            <select class="dash-select">
+              <option>All sports</option>
+              <option>Soccer</option>
+              <option>Basketball</option>
+            </select>
+            <select class="dash-select">
+              <option>Last 8 weeks</option>
+              <option>Last 30 days</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label">Active Coaches</div>
+            <div class="kpi-value">48</div>
+            <div class="kpi-delta positive">+6 this month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Plans Created</div>
+            <div class="kpi-value">312</div>
+            <div class="kpi-delta positive">+94 vs last period</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Curriculum Alignment</div>
+            <div class="kpi-value">94%</div>
+            <div class="kpi-delta positive">↑ 7pts</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Time Saved / Coach</div>
+            <div class="kpi-value">6.2h</div>
+            <div class="kpi-delta positive">per week avg</div>
+          </div>
+        </div>
+
+        <div class="dash-charts-row">
+          <div class="dash-chart-card">
+            <div class="chart-title">Plans Generated · 8-Week Trend</div>
+            <div class="bar-chart">
+              <div class="bar-col"><div class="bar-fill" style="height:45%"></div><div class="bar-label-x">W1</div></div>
+              <div class="bar-col"><div class="bar-fill" style="height:58%"></div><div class="bar-label-x">W2</div></div>
+              <div class="bar-col"><div class="bar-fill" style="height:52%"></div><div class="bar-label-x">W3</div></div>
+              <div class="bar-col"><div class="bar-fill" style="height:71%"></div><div class="bar-label-x">W4</div></div>
+              <div class="bar-col"><div class="bar-fill" style="height:65%"></div><div class="bar-label-x">W5</div></div>
+              <div class="bar-col"><div class="bar-fill" style="height:80%"></div><div class="bar-label-x">W6</div></div>
+              <div class="bar-col"><div class="bar-fill" style="height:88%"></div><div class="bar-label-x">W7</div></div>
+              <div class="bar-col accent-bar"><div class="bar-fill accent-fill" style="height:100%"></div><div class="bar-label-x">W8</div></div>
+            </div>
+          </div>
+
+          <div class="dash-leaderboard">
+            <div class="chart-title">Top Coaches · This Period</div>
+            <div class="leaderboard-row">
+              <div class="lb-rank rank-1">1</div>
+              <div class="lb-avatar">MT</div>
+              <div class="lb-info">
+                <div class="lb-name">Marcus T.</div>
+                <div class="lb-sport">Soccer</div>
+              </div>
+              <div class="lb-count">42 plans</div>
+            </div>
+            <div class="leaderboard-row">
+              <div class="lb-rank rank-2">2</div>
+              <div class="lb-avatar">SK</div>
+              <div class="lb-info">
+                <div class="lb-name">Sarah K.</div>
+                <div class="lb-sport">Basketball</div>
+              </div>
+              <div class="lb-count">38 plans</div>
+            </div>
+            <div class="leaderboard-row">
+              <div class="lb-rank rank-3">3</div>
+              <div class="lb-avatar">JP</div>
+              <div class="lb-info">
+                <div class="lb-name">James P.</div>
+                <div class="lb-sport">Track &amp; Field</div>
+              </div>
+              <div class="lb-count">31 plans</div>
+            </div>
+            <div class="leaderboard-row">
+              <div class="lb-rank">4</div>
+              <div class="lb-avatar">RL</div>
+              <div class="lb-info">
+                <div class="lb-name">Rachel L.</div>
+                <div class="lb-sport">Volleyball</div>
+              </div>
+              <div class="lb-count">28 plans</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-callouts">
+      <div class="callout-card">
+        <div class="callout-icon">🏫</div>
+        <div class="callout-title">District Oversight</div>
+        <div class="callout-desc">Monitor all schools, programs, and coaches from one dashboard.</div>
+      </div>
+      <div class="callout-card">
+        <div class="callout-icon">✅</div>
+        <div class="callout-title">Compliance Reporting</div>
+        <div class="callout-desc">One-click export of curriculum alignment reports for administrators.</div>
+      </div>
+      <div class="callout-card">
+        <div class="callout-icon">📊</div>
+        <div class="callout-title">Coach Insights</div>
+        <div class="callout-desc">Identify coaching gaps, celebrate wins, and support development.</div>
+      </div>
+      <div class="callout-card">
+        <div class="callout-icon">📅</div>
+        <div class="callout-title">Season Planning</div>
+        <div class="callout-desc">Map curriculum goals to sessions across the full academic year.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Coach Testimonials</div>
+      <h2 class="section-title">Loved by coaches<br>at every level.</h2>
+    </div>
+
+    <div class="rating-bar">
+      <div class="rating-stars">★★★★★</div>
+      <div class="rating-score">4.9 out of 5</div>
+      <div class="rating-count">from 340+ reviews</div>
+      <div class="rating-badges">
+        <div class="review-badge">Product Hunt Top Pick</div>
+        <div class="review-badge">Capterra 5★</div>
+      </div>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testi-card testi-featured">
+        <div class="testi-quote-mark">"</div>
+        <div class="testi-body">
+          I used to spend 2–3 hours every week writing out session plans. Now it takes me under 5 minutes. When it rained last Tuesday and we had to move inside, I tapped one button and had a completely redesigned gym session ready before the kids even got changed. It's not just a time saver — it actually makes my plans better.
+        </div>
+        <div class="testi-author">
+          <div class="testi-avatar testi-av-large">MT</div>
+          <div class="testi-meta">
+            <div class="testi-name">Marcus Thompson</div>
+            <div class="testi-role">Head Soccer Coach · North Vancouver Youth FC</div>
+            <div class="testi-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-body">
+          Our school district rolled it out across 12 schools. The admin dashboard alone justifies the cost — I can see exactly which coaches are hitting PE standards without chasing anyone for reports.
+        </div>
+        <div class="testi-author">
+          <div class="testi-avatar">SR</div>
+          <div class="testi-meta">
+            <div class="testi-name">Sarah Reeves</div>
+            <div class="testi-role">District PE Coordinator · Surrey School Board</div>
+            <div class="testi-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-body">
+          I coach 3 different age groups. Sportified remembers what each group has worked on and builds the next session so nothing gets repeated. It's like having an assistant coach.
+        </div>
+        <div class="testi-author">
+          <div class="testi-avatar">TL</div>
+          <div class="testi-meta">
+            <div class="testi-name">Tyler Lee</div>
+            <div class="testi-role">Multi-Sport Coach · Richmond Athletics</div>
+            <div class="testi-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-body">
+          As a university PE instructor I need curriculum documentation for every session. Sportified auto-tags every plan to course outcomes. My department head was impressed.
+        </div>
+        <div class="testi-author">
+          <div class="testi-avatar">JP</div>
+          <div class="testi-meta">
+            <div class="testi-name">Jennifer Park</div>
+            <div class="testi-role">PE Instructor · Kwantlen Polytechnic University</div>
+            <div class="testi-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-body">
+          The sport-specific knowledge is remarkable. The basketball drills are properly categorized by skill level and the progressions make sense. It clearly wasn't built by a generalist.
+        </div>
+        <div class="testi-author">
+          <div class="testi-avatar">DK</div>
+          <div class="testi-meta">
+            <div class="testi-name">David Kim</div>
+            <div class="testi-role">AAA Basketball Coach · Burnaby Basketball Academy</div>
+            <div class="testi-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-body">
+          We went from 40% of teachers submitting lesson plans to 95% after Sportified. The resistance vanished because planning actually became fast and painless.
+        </div>
+        <div class="testi-author">
+          <div class="testi-avatar">AM</div>
+          <div class="testi-meta">
+            <div class="testi-name">Amanda Miller</div>
+            <div class="testi-role">VP Academic · Riverside Secondary School</div>
+            <div class="testi-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="compare-section" id="compare">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Why Sportified</div>
+      <h2 class="section-title">Not just another drill app.</h2>
+      <p class="section-sub">Generic tools give you a list of drills. Sportified gives you a complete, adaptable practice plan — built in seconds, aligned to your curriculum.</p>
+    </div>
+
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th class="compare-feature-col">Feature</th>
+            <th class="compare-us">
+              <div class="us-header">
+                <div class="us-logo">Sportified</div>
+                <div class="us-tag">Recommended</div>
+              </div>
+            </th>
+            <th>Generic Drill Apps</th>
+            <th>Manual Planning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AI-Generated full plans</td>
+            <td class="compare-us check-cell"><span class="check">✓</span></td>
+            <td class="x-cell"><span class="ex">✗</span></td>
+            <td class="x-cell"><span class="ex">✗</span></td>
+          </tr>
+          <tr>
+            <td>Real-time weather/space adaptation</td>
+            <td class="compare-us check-cell"><span class="check">✓</span></td>
+            <td class="x-cell"><span class="ex">✗</span></td>
+            <td class="x-cell"><span class="ex">✗</span></td>
+          </tr>
+          <tr>
+            <td>Admin oversight dashboard</td>
+            <td class="compare-us check-cell"><span class="check">✓</span></td>
+            <td class="x-cell"><span class="ex">✗</span></td>
+            <td class="x-cell"><span class="ex">✗</span></td>
+          </tr>
+          <tr>
+            <td>Curriculum alignment mapping</td>
+            <td class="compare-us check-cell"><span class="check">✓</span></td>
+            <td class="partial-cell"><span class="partial">~</span></td>
+            <td class="x-cell"><span class="ex">✗</span></td>
+          </tr>
+          <tr>
+            <td>Skill progression tracking</td>
+            <td class="compare-us check-cell"><span class="check">✓</span></td>
+            <td class="partial-cell"><span class="partial">~</span></td>
+            <td class="x-cell"><span class="ex">✗</span></td>
+          </tr>
+          <tr>
+            <td>40+ sports support</td>
+            <td class="compare-us check-cell"><span class="check">✓</span></td>
+            <td class="partial-cell"><span class="partial">~</span></td>
+            <td class="check-cell"><span class="check-muted">✓</span></td>
+          </tr>
+          <tr>
+            <td>Time to plan a session</td>
+            <td class="compare-us highlight-cell">Under 60 sec</td>
+            <td>15–30 min</td>
+            <td>1–2 hours</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     WAITLIST SECTION  — powered by Tally
+     ============================================ -->
+<section class="waitlist-section" id="waitlist">
+  <div class="waitlist-glow"></div>
+  <div class="container">
+    <div class="waitlist-inner">
+
+      <div class="waitlist-eyebrow">Early Access</div>
+
+      <h2 class="waitlist-headline">
+        Be the first to<br><span>coach smarter.</span>
+      </h2>
+
+      <p class="waitlist-sub">
+        Sportified is launching soon. Join the waitlist and get early access, founding member pricing, and first look at every new feature.
+      </p>
+
+      <div class="waitlist-social-proof">
+        <div class="proof-avatars">
+          <div class="avatar av1">MK</div>
+          <div class="avatar av2">SR</div>
+          <div class="avatar av3">TL</div>
+          <div class="avatar av4">JP</div>
+        </div>
+        <div class="waitlist-proof-text">
+          <strong>2,400+ coaches</strong> already on the list
+        </div>
+      </div>
+
+      <button
+        class="waitlist-btn"
+        onclick="Tally.openPopup('q4Oqqg', {layout:'modal', width:500, autoClose:4000, emoji:{text:'🏆', animation:'wave'}})"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.61 5.06 2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 18z"/></svg>
+        Join the waitlist — it's free
+      </button>
+
+      <div class="waitlist-perks">
+        <div class="waitlist-perk"><span class="perk-check">✓</span> Free to join</div>
+        <div class="waitlist-perk"><span class="perk-check">✓</span> No credit card needed</div>
+        <div class="waitlist-perk"><span class="perk-check">✓</span> Founding member pricing</div>
+        <div class="waitlist-perk"><span class="perk-check">✓</span> Unsubscribe anytime</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRICING + CTA -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-bg">
+    <div class="pricing-glow"></div>
+  </div>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Pricing</div>
+      <h2 class="section-title">Start free. Scale when ready.</h2>
+      <p class="section-sub">No credit card needed. Build your first plan in 60 seconds.</p>
+    </div>
+
+    <div class="pricing-cards">
+      <div class="price-card">
+        <div class="price-tier">Free</div>
+        <div class="price-amount"><span class="price-dollar">$</span>0<span class="price-period">/mo</span></div>
+        <div class="price-desc">For individual coaches getting started</div>
+        <ul class="price-features" role="list">
+          <li>5 AI-generated plans/month</li>
+          <li>10 sports supported</li>
+          <li>Basic plan export (PDF)</li>
+          <li>Community support</li>
+        </ul>
+        <button class="btn-secondary btn-block" onclick="Tally.openPopup('q4Oqqg', {layout:'modal',width:500,autoClose:4000})">Join waitlist</button>
+      </div>
+
+      <div class="price-card price-popular">
+        <div class="popular-badge">Most Popular</div>
+        <div class="price-tier">Pro</div>
+        <div class="price-amount"><span class="price-dollar">$</span>19<span class="price-period">/mo</span></div>
+        <div class="price-desc">For active coaches and small programs</div>
+        <ul class="price-features" role="list">
+          <li>Unlimited AI plans</li>
+          <li>40+ sports · real-time adaptability</li>
+          <li>Skill progression tracking</li>
+          <li>Curriculum alignment tags</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="btn-primary btn-block" onclick="Tally.openPopup('q4Oqqg', {layout:'modal',width:500,autoClose:4000})">Join waitlist</button>
+      </div>
+
+      <div class="price-card">
+        <div class="price-tier">School / District</div>
+        <div class="price-amount"><span class="price-dollar">$</span>149<span class="price-period">/mo</span></div>
+        <div class="price-desc">For programs, schools, and districts</div>
+        <ul class="price-features" role="list">
+          <li>Everything in Pro</li>
+          <li>Admin oversight dashboard</li>
+          <li>Compliance reporting</li>
+          <li>Unlimited coaches</li>
+          <li>Season planning tools</li>
+          <li>Dedicated onboarding</li>
+        </ul>
+        <button class="btn-secondary btn-block" onclick="Tally.openPopup('q4Oqqg', {layout:'modal',width:500,autoClose:4000})">Contact sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" aria-label="Sportified home">
+        <svg viewBox="0 0 140 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="120" height="28" aria-label="Sportified">
+          <rect x="0" y="4" width="22" height="6" rx="3" fill="var(--color-accent)"/>
+          <rect x="0" y="13" width="22" height="6" rx="3" fill="var(--color-accent)" opacity="0.6"/>
+          <rect x="0" y="22" width="22" height="6" rx="3" fill="var(--color-accent)"/>
+          <text x="30" y="23" font-family="'Clash Display', sans-serif" font-size="18" font-weight="600" fill="currentColor" letter-spacing="-0.5">Sportified</text>
+        </svg>
+      </a>
+      <p class="footer-tagline">AI lesson plans for coaches, programs, and schools.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <div class="footer-col-title">Product</div>
+        <a href="#features">AI Plans</a>
+        <a href="#adaptability">Adaptability</a>
+        <a href="#dashboard">Admin Dashboard</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">For</div>
+        <a href="#">Individual Coaches</a>
+        <a href="#">PE Teachers</a>
+        <a href="#">Youth Programs</a>
+        <a href="#">Schools &amp; Districts</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© 2025 Sportified. All rights reserved.</span>
+      <span>Built in Vancouver, Canada 🇨🇦</span>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
